@@ -85,7 +85,7 @@
         <!-- Version Footer -->
         <div class="mt-8 item-card text-center cursor-default hover:bg-[#0a0a0a] hover:border-[#1a1a1a]">
             <p class="text-sub text-xs mb-1">Current Version</p>
-            <p class="text-ver font-mono text-xs" id="version-text">version-loading...</p>
+            <p class="text-ver font-mono text-xs" id="version-text">version-df7528517c6849f7</p>
         </div>
 
     </div>
@@ -126,7 +126,7 @@
 
         // Generate a pseudo-version based on date (matches image style)
         const date = new Date();
-        const verStr = `version-${date.getTime().toString(16)}`;
+        const verStr = `version-df7528517c6849f7`;
         document.getElementById('version-text').innerText = verStr;
 
         const files = {
@@ -159,7 +159,7 @@
                 document.getElementById('modal-content').innerText = currentContent;
             } catch (e) {
                 currentContent = "";
-                document.getElementById('modal-content').innerText = `Error: ${e.message}\n\nMake sure the GitHub username/repo is correct in the script.`;
+                document.getElementById('modal-content').innerText = `Error: ${e.message}\n\.`;
                 document.getElementById('modal-content').classList.add('text-red-500');
             }
         }
