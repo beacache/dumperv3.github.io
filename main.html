@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Offset Repository</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        dark: '#0a0a0a',
+                        card: '#111111'
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        body {
+            background-color: #050505;
+            background-image: 
+                radial-gradient(at 50% 0%, rgba(59, 130, 246, 0.1) 0px, transparent 50%),
+                radial-gradient(at 100% 0%, rgba(139, 92, 246, 0.05) 0px, transparent 50%);
+            color: #e5e5e5;
+            overflow-x: hidden;
+        }
+        
+        .glass-card {
+            background: rgba(20, 20, 20, 0.6);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .glass-card:hover {
+            border-color: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+            background: rgba(30, 30, 30, 0.8);
+            box-shadow: 0 0 30px -10px rgba(59, 130, 246, 0.15);
+        }
+
+        .modal-overlay {
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(8px);
+        }
+
+        /* Syntax Highlighting Colors */
+        .token-key { color: #facc15; }
+        .token-val { color: #a5f3fc; }
+        .token-comment { color: #6b7280; }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #555; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center py-16 px-4 selection:bg-blue-500/30 selection:text-blue-200">
+
+    <main class="w-full max-w-5xl relative z-10">
+        
+        <!-- Header -->
+        <div class="text-center mb-16">
+            <h1 class="text-5xl font-extrabold tracking-tight mb-4 text-transparent bg-clip-text bg-gradient-to-b from-white to-gray-500">
+                Offset Repository
+            </h1>
+            
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 font-mono text-xs tracking-wide">
+                <span class="relative flex h-2 w-2">
+                  <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+                  <span class="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
+                </span>
+                SYNCED WITH GITHUB
+            </div>
+        </div>
+
+        <!-- Cards Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+            <!-- JSON Card -->
+            <div onclick="fetchAndOpen('json')" class="glass-card rounded-xl p-8 group cursor-pointer relative overflow-hidden">
+                <div class="absolute top-0 right-0 p-5 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <i class="fa-solid fa-expand text-gray-500"></i>
+                </div>
+                <div class="flex flex-col gap-5 items-center text-center">
+                    <div class="h-14 w-14 rounded-2xl bg-yellow-500/10 flex items-center justify-center text-yellow-400 border border-yellow-500/20 group-hover:scale-110 transition-transform shadow-[0_0_15px_-3px_rgba(234,179,8,0.2)]">
+                        <i class="fa-solid fa-code text-2xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-white text-xl">offsets.json</h3>
+                        <p class="text-xs text-gray-500 font-mono mt-2">Universal Format</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- HPP Card -->
+            <div onclick="fetchAndOpen('hpp')" class="glass-card rounded-xl p-8 group cursor-pointer relative overflow-hidden">
+                <div class="absolute top-0 right-0 p-5 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <i class="fa-solid fa-expand text-gray-500"></i>
+                </div>
+                <div class="flex flex-col gap-5 items-center text-center">
+                    <div class="h-14 w-14 rounded-2xl bg-blue-500/10 flex items-center justify-center text-blue-400 border border-blue-500/20 group-hover:scale-110 transition-transform shadow-[0_0_15px_-3px_rgba(59,130,246,0.2)]">
+                        <i class="fa-brands fa-cuttlefish text-2xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-white text-xl">offsets.hpp</h3>
+                        <p class="text-xs text-gray-500 font-mono mt-2">C++ Header</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- LUA Card -->
+            <div onclick="fetchAndOpen('lua')" class="glass-card rounded-xl p-8 group cursor-pointer relative overflow-hidden">
+                <div class="absolute top-0 right-0 p-5 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <i class="fa-solid fa-expand text-gray-500"></i>
+                </div>
+                <div class="flex flex-col gap-5 items-center text-center">
+                    <div class="h-14 w-14 rounded-2xl bg-indigo-500/10 flex items-center justify-center text-indigo-400 border border-indigo-500/20 group-hover:scale-110 transition-transform shadow-[0_0_15px_-3px_rgba(99,102,241,0.2)]">
+                        <i class="fa-solid fa-moon text-2xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-white text-xl">offsets.lua</h3>
+                        <p class="text-xs text-gray-500 font-mono mt-2">Lua Script</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Repo Link Footer -->
+        <div class="mt-20 text-center">
+            <a id="repo-link" href="#" target="_blank" class="text-xs text-gray-600 hover:text-white transition-colors font-mono">
+                <i class="fa-brands fa-github mr-2"></i>View Source Repository
+            </a>
+        </div>
+
+    </main>
+
+    <!-- Modal -->
+    <div id="modal" class="fixed inset-0 z-50 hidden opacity-0 transition-opacity duration-300">
+        <div class="modal-overlay absolute inset-0" onclick="closeModal()"></div>
+        
+        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full max-w-3xl px-4">
+            <div class="bg-[#0f0f0f] border border-white/10 rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[85vh]">
+                
+                <!-- Modal Header -->
+                <div class="flex items-center justify-between p-5 border-b border-white/5 bg-[#141414]">
+                    <div class="flex items-center gap-3">
+                        <div id="modal-icon" class="h-8 w-8 rounded bg-gray-800 flex items-center justify-center text-sm"></div>
+                        <div>
+                            <h3 id="modal-title" class="text-white font-bold text-lg">Filename</h3>
+                            <div class="flex items-center gap-2">
+                                <span class="relative flex h-1.5 w-1.5">
+                                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                                    <span class="relative inline-flex rounded-full h-1.5 w-1.5 bg-green-500"></span>
+                                </span>
+                                <p class="text-[10px] text-gray-400 uppercase tracking-wider">Live from GitHub</p>
+                            </div>
+                        </div>
+                    </div>
+                    <button onclick="closeModal()" class="h-8 w-8 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center text-gray-400 hover:text-white transition-colors">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+
+                <!-- Code Content -->
+                <div class="flex-1 overflow-y-auto bg-[#0a0a0a] relative group min-h-[300px]">
+                    <!-- Loading Spinner -->
+                    <div id="loader" class="absolute inset-0 flex items-center justify-center bg-[#0a0a0a] z-10 hidden">
+                        <i class="fa-solid fa-circle-notch fa-spin text-blue-500 text-2xl"></i>
+                    </div>
+
+                    <div class="absolute top-2 right-4 opacity-0 group-hover:opacity-100 transition-opacity z-20">
+                        <span class="text-[10px] text-gray-600 font-mono uppercase">ReadOnly</span>
+                    </div>
+                    <pre class="p-6"><code id="modal-content" class="font-mono text-sm text-gray-300 leading-relaxed whitespace-pre-wrap break-all"></code></pre>
+                </div>
+
+                <!-- Actions -->
+                <div class="p-5 border-t border-white/5 bg-[#141414] flex gap-3">
+                    <button onclick="copyContent()" class="flex-1 bg-white text-black font-bold py-3 rounded-lg hover:bg-gray-200 transition-colors flex items-center justify-center gap-2 text-sm">
+                        <i class="fa-regular fa-copy"></i> COPY RAW
+                    </button>
+                    <button onclick="downloadFile()" class="px-6 bg-white/5 border border-white/10 text-white font-bold py-3 rounded-lg hover:bg-white/10 transition-colors flex items-center justify-center gap-2 text-sm">
+                        <i class="fa-solid fa-download"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-10 left-1/2 -translate-x-1/2 bg-white text-black px-6 py-3 rounded-lg shadow-[0_0_20px_rgba(255,255,255,0.2)] font-bold text-sm transform translate-y-20 opacity-0 transition-all duration-300 z-50 flex items-center gap-3">
+        <i class="fa-solid fa-check text-green-600"></i>
+        <span id="toast-msg">Copied to clipboard</span>
+    </div>
+
+    <script>
+        // ==========================================
+        // CONFIGURATION: EDIT THIS SECTION
+        // ==========================================
+        const GITHUB_USERNAME = "YourUsername";  // Replace with your GitHub Username
+        const GITHUB_REPO = "YourRepoName";      // Replace with your Repo Name
+        const BRANCH = "main";                   // Usually 'main' or 'master'
+        // ==========================================
+
+        document.getElementById('repo-link').href = `https://github.com/${GITHUB_USERNAME}/${GITHUB_REPO}`;
+
+        const fileConfig = {
+            'json': {
+                filename: 'offsets.json',
+                icon: '<i class="fa-solid fa-code text-yellow-400"></i>'
+            },
+            'hpp': {
+                filename: 'offsets.hpp',
+                icon: '<i class="fa-brands fa-cuttlefish text-blue-400"></i>'
+            },
+            'lua': {
+                filename: 'offsets.lua',
+                icon: '<i class="fa-solid fa-moon text-indigo-400"></i>'
+            }
+        };
+
+        let currentContent = "";
+        let currentFilename = "";
+
+        async function fetchAndOpen(key) {
+            const config = fileConfig[key];
+            currentFilename = config.filename;
+
+            // Setup Modal UI
+            document.getElementById('modal-title').innerText = config.filename;
+            document.getElementById('modal-icon').innerHTML = config.icon;
+            document.getElementById('modal-content').innerText = ""; 
+            
+            const modal = document.getElementById('modal');
+            const loader = document.getElementById('loader');
+            
+            // Show Modal
+            modal.classList.remove('hidden');
+            loader.classList.remove('hidden'); // Show spinner
+            
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+            }, 10);
+
+            // Construct Raw GitHub URL
+            const url = `https://raw.githubusercontent.com/${GITHUB_USERNAME}/${GITHUB_REPO}/${BRANCH}/${config.filename}`;
+
+            try {
+                const response = await fetch(url);
+                
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                
+                const text = await response.text();
+                currentContent = text;
+                document.getElementById('modal-content').innerText = text;
+
+            } catch (error) {
+                console.error(error);
+                currentContent = "// Error: Could not fetch file.\n// Check your Internet, Repo Privacy, or Filename.";
+                document.getElementById('modal-content').innerText = currentContent;
+                document.getElementById('modal-content').classList.add('text-red-400');
+            } finally {
+                loader.classList.add('hidden'); // Hide spinner
+            }
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('modal');
+            modal.classList.add('opacity-0');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                document.getElementById('modal-content').classList.remove('text-red-400');
+            }, 300);
+        }
+
+        function copyContent() {
+            if(!currentContent) return;
+            navigator.clipboard.writeText(currentContent).then(() => {
+                showToast('Raw content copied');
+            });
+        }
+
+        function downloadFile() {
+            if(!currentContent) return;
+            const blob = new Blob([currentContent], { type: 'text/plain' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = currentFilename;
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+            document.body.removeChild(a);
+            showToast('Download started');
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-msg').innerText = msg;
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 2000);
+        }
+
+        // Close on Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === "Escape") closeModal();
+        });
+    </script>
+</body>
+</html>
